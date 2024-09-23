@@ -19,6 +19,10 @@ const EmployeeTable = ({ employeeList, addEmployee }) => {
     setShowForm(true);
   };
 
+  const handleFormClose = () => {
+    setShowForm(false);
+  };
+
   return (
     <div>
       <h2>Selection Example</h2>
@@ -33,51 +37,60 @@ const EmployeeTable = ({ employeeList, addEmployee }) => {
         </div>
       </div>
 
-      {showForm && <EmployeeForm addEmployee={addEmployee} />}
+      {showForm && (
+        <div className="mb-4">
+          <EmployeeForm addEmployee={addEmployee} onClose={handleFormClose} />
+          <Button variant="secondary" onClick={handleFormClose}>
+            Cancel
+          </Button>
+        </div>
+      )}
 
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>
-              <Form.Check
-                type="checkbox"
-                onChange={e => {
-                  if (e.target.checked) {
-                    setSelectedEmployees(employeeList);
-                  } else {
-                    setSelectedEmployees([]);
-                  }
-                }}
-              />
-            </th>
-            <th>Employee ID</th>
-            <th>Name</th>
-            <th>Date of Birth</th>
-            <th>Address</th>
-            <th>Phone</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          {employeeList.map((employee, index) => (
-            <tr key={index}>
-              <td>
+      {!showForm && (
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>
                 <Form.Check
                   type="checkbox"
-                  checked={selectedEmployees.includes(employee)}
-                  onChange={() => toggleEmployeeSelection(employee)}
+                  onChange={e => {
+                    if (e.target.checked) {
+                      setSelectedEmployees(employeeList);
+                    } else {
+                      setSelectedEmployees([]);
+                    }
+                  }}
                 />
-              </td>
-              <td>{employee.employeeId}</td>
-              <td>{employee.name}</td>
-              <td>{employee.dateOfBirth}</td>
-              <td>{employee.address}</td>
-              <td>{employee.phone}</td>
-              <td>{employee.email}</td>
+              </th>
+              <th>Employee ID</th>
+              <th>Name</th>
+              <th>Date of Birth</th>
+              <th>Address</th>
+              <th>Phone</th>
+              <th>Email</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {employeeList.map((employee, index) => (
+              <tr key={index}>
+                <td>
+                  <Form.Check
+                    type="checkbox"
+                    checked={selectedEmployees.includes(employee)}
+                    onChange={() => toggleEmployeeSelection(employee)}
+                  />
+                </td>
+                <td>{employee.employeeId}</td>
+                <td>{employee.name}</td>
+                <td>{employee.dateOfBirth}</td>
+                <td>{employee.address}</td>
+                <td>{employee.phone}</td>
+                <td>{employee.email}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      )}
 
       <p>Selected Employees: {selectedEmployees.length}</p>
     </div>

@@ -47,13 +47,8 @@ const App = () => {
   ]);
 
   const addEmployee = newEmployee => {
-    setEmployeeList([
-      ...employeeList,
-      {
-        ...newEmployee,
-        employeeId: (employeeList.length + 1).toString()
-      }
-    ]);
+    const newId = (employeeList.length + 1).toString();
+    setEmployeeList([...employeeList, { ...newEmployee, employeeId: newId }]);
   };
 
   return (
