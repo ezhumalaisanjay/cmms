@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Table, Button, Form } from 'react-bootstrap';
-import EmployeeForm from './EmployeeForm'; // Assuming EmployeeForm is in the same folder
+import PropTypes from 'prop-types';
+import EmployeeForm from './EmployeeForm';
 
 const EmployeeTable = ({ employeeList, addEmployee }) => {
   const [selectedEmployees, setSelectedEmployees] = useState([]);
@@ -81,6 +82,20 @@ const EmployeeTable = ({ employeeList, addEmployee }) => {
       <p>Selected Employees: {selectedEmployees.length}</p>
     </div>
   );
+};
+
+EmployeeTable.propTypes = {
+  employeeList: PropTypes.arrayOf(
+    PropTypes.shape({
+      employeeId: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      dateOfBirth: PropTypes.string.isRequired,
+      address: PropTypes.string.isRequired,
+      phone: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired
+    })
+  ).isRequired,
+  addEmployee: PropTypes.func.isRequired
 };
 
 export default EmployeeTable;
