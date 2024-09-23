@@ -1,0 +1,86 @@
+import React, { useState } from 'react';
+import { Table, Button, Form } from 'react-bootstrap';
+import EmployeeForm from './EmployeeForm'; // Assuming EmployeeForm is in the same folder
+
+const EmployeeTable = ({ employeeList, addEmployee }) => {
+  const [selectedEmployees, setSelectedEmployees] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+
+  const toggleEmployeeSelection = employee => {
+    if (selectedEmployees.includes(employee)) {
+      setSelectedEmployees(selectedEmployees.filter(e => e !== employee));
+    } else {
+      setSelectedEmployees([...selectedEmployees, employee]);
+    }
+  };
+
+  const handleNewButtonClick = () => {
+    setShowForm(true);
+  };
+
+  return (
+    <div>
+      <h2>Selection Example</h2>
+      <div className="d-flex justify-content-between mb-3">
+        <div>
+          <Button variant="primary" onClick={handleNewButtonClick}>
+            + New
+          </Button>
+        </div>
+        <div>
+          <Button variant="secondary">Export</Button>
+        </div>
+      </div>
+
+      {showForm && <EmployeeForm addEmployee={addEmployee} />}
+
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>
+              <Form.Check
+                type="checkbox"
+                onChange={e => {
+                  if (e.target.checked) {
+                    setSelectedEmployees(employeeList);
+                  } else {
+                    setSelectedEmployees([]);
+                  }
+                }}
+              />
+            </th>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {employeeList.map((employee, index) => (
+            <tr key={index}>
+              <td>
+                <Form.Check
+                  type="checkbox"
+                  checked={selectedEmployees.includes(employee)}
+                  onChange={() => toggleEmployeeSelection(employee)}
+                />
+              </td>
+              <td>{employee.employeeId}</td>
+              <td>{employee.name}</td>
+              <td>{employee.dateOfBirth}</td>
+              <td>{employee.address}</td>
+              <td>{employee.phone}</td>
+              <td>{employee.email}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+
+      <p>Selected Employees: {selectedEmployees.length}</p>
+    </div>
+  );
+};
+
+export default EmployeeTable;
