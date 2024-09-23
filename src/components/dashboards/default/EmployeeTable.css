@@ -1,0 +1,9 @@
+.table-responsive {
+    overflow-x: auto;
+    /* Enables horizontal scrolling */
+}
+
+.table {
+    min-width: 600px;
+    /* Ensure a minimum width for better readability on small screens */
+}
