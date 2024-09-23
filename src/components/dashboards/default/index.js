@@ -12,7 +12,7 @@ const EmployeeForm = () => {
     profilePictureUrl: ''
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -20,7 +20,7 @@ const EmployeeForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     // Handle form submission logic, e.g., send data to the server.
     console.log('Form Data:', formData);
