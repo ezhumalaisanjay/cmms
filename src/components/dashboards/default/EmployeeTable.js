@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Table, Button, Form } from 'react-bootstrap';
+import { Table, Button, Form, Image } from 'react-bootstrap'; // Import Image from react-bootstrap
 import PropTypes from 'prop-types';
 import EmployeeForm from './EmployeeForm';
 
@@ -24,75 +24,122 @@ const EmployeeTable = ({ employeeList, addEmployee }) => {
   };
 
   return (
-    <div>
-      <h2>Selection Example</h2>
+    <div className="mb-3 card p-4">
+      <div className="card-header">
+        <h2>Employees</h2>
+      </div>
+
       <div className="d-flex justify-content-between mb-3">
         <div>
-          <Button variant="primary" onClick={handleNewButtonClick}>
+          <Button
+            variant="primary"
+            className="btn btn-falcon-default btn-sm"
+            onClick={handleNewButtonClick}
+          >
             + New
           </Button>
         </div>
         <div>
-          <Button variant="secondary">Export</Button>
+          <Button
+            variant="secondary"
+            className="ms-2 btn btn-falcon-default btn-sm"
+          >
+            Export
+          </Button>
         </div>
       </div>
 
-      {showForm && (
+      {showForm ? (
         <div className="mb-4">
           <EmployeeForm addEmployee={addEmployee} onClose={handleFormClose} />
-          <Button variant="secondary" onClick={handleFormClose}>
-            Cancel
-          </Button>
         </div>
-      )}
-
-      {!showForm && (
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>
-                <Form.Check
-                  type="checkbox"
-                  onChange={e => {
-                    if (e.target.checked) {
-                      setSelectedEmployees(employeeList);
-                    } else {
-                      setSelectedEmployees([]);
-                    }
-                  }}
-                />
-              </th>
-              <th>Employee ID</th>
-              <th>Name</th>
-              <th>Date of Birth</th>
-              <th>Address</th>
-              <th>Phone</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            {employeeList.map((employee, index) => (
-              <tr key={index}>
-                <td>
+      ) : (
+        <>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>
                   <Form.Check
                     type="checkbox"
-                    checked={selectedEmployees.includes(employee)}
-                    onChange={() => toggleEmployeeSelection(employee)}
+                    onChange={e => {
+                      if (e.target.checked) {
+                        setSelectedEmployees(employeeList);
+                      } else {
+                        setSelectedEmployees([]);
+                      }
+                    }}
                   />
-                </td>
-                <td>{employee.employeeId}</td>
-                <td>{employee.name}</td>
-                <td>{employee.dateOfBirth}</td>
-                <td>{employee.address}</td>
-                <td>{employee.phone}</td>
-                <td>{employee.email}</td>
+                </th>
+                <th>Profile</th>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Date of Birth</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Email</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
+            </thead>
+            <tbody>
+              {employeeList.map((employee, index) => (
+                <tr
+                  key={index}
+                  style={{ cursor: 'pointer' }}
+                  className="align-middle white-space-nowrap"
+                  role="row"
+                >
+                  <td>
+                    <Form.Check
+                      type="checkbox"
+                      checked={selectedEmployees.includes(employee)}
+                      onChange={() => toggleEmployeeSelection(employee)}
+                    />
+                  </td>
+                  <td>
+                    <Image
+                      src={employee.profileImage}
+                      alt={`${employee.name}'s profile`}
+                      roundedCircle
+                      width={50}
+                      height={50}
+                    />
+                  </td>
+                  <td>{employee.employeeId}</td>
+                  <td>{employee.name}</td>
+                  <td>{employee.dateOfBirth}</td>
+                  <td>{employee.address}</td>
+                  <td>{employee.phone}</td>
+                  <td>{employee.email}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
 
-      <p>Selected Employees: {selectedEmployees.length}</p>
+          <p>Selected Employees: {selectedEmployees.length}</p>
+
+          <div className="card-footer">
+            <div className="d-flex justify-content-center align-items-center">
+              <Button
+                variant="secondary"
+                className="btn btn-falcon-default btn-sm m-2"
+              >
+                Previous
+              </Button>
+              <Button
+                variant="secondary"
+                className="active page me-2 btn btn-falcon-default btn-sm"
+              >
+                Page 1
+              </Button>
+              <Button
+                variant="secondary"
+                className="btn btn-falcon-default btn-sm"
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
@@ -105,7 +152,8 @@ EmployeeTable.propTypes = {
       dateOfBirth: PropTypes.string.isRequired,
       address: PropTypes.string.isRequired,
       phone: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired
+      email: PropTypes.string.isRequired,
+      profileImage: PropTypes.string // New prop for profile image
     })
   ).isRequired,
   addEmployee: PropTypes.func.isRequired
