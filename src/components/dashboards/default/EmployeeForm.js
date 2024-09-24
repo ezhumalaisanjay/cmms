@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-
-// Import the image from your assets folder
-import successImage from 'assets/img/icons/Done-pana.svg'; // Adjust the file name
+import successImage from 'assets/img/icons/Done-pana.svg'; // Adjust the file path as necessary
 
 const EmployeeForm = ({ addEmployee, onClose }) => {
   const [formData, setFormData] = useState({
@@ -16,6 +14,8 @@ const EmployeeForm = ({ addEmployee, onClose }) => {
   });
 
   const [showSuccessModal, setShowSuccessModal] = useState(false); // Modal state
+  const [isSubmitting, setIsSubmitting] = useState(false); // Submitting state
+  const [errorMessage, setErrorMessage] = useState(null); // Error handling
 
   const handleInputChange = e => {
     const { name, value } = e.target;
@@ -34,24 +34,64 @@ const EmployeeForm = ({ addEmployee, onClose }) => {
     });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setErrorMessage(null);
+    try {
+      // Construct employee data with the current timestamp
+      const employeeData = {
+        ...formData,
+        category: 'Employees',
+        timestamp: new Date().toISOString() // Sets timestamp to the current date and time
+      };
 
-    // Prepare form data with profileImage file
-    const newEmployee = { ...formData };
-    addEmployee(newEmployee);
+      // Log employeeData for debugging
+      console.log('Employee data before sending:', employeeData);
 
-    // Reset form after submission
-    setFormData({
-      name: '',
-      dateOfBirth: '',
-      address: '',
-      phone: '',
-      email: '',
-      profileImage: null // Reset profile image
-    });
+      // Send form data to the provided API
+      const response = await fetch(
+        'https://l7yiegdmm9.execute-api.us-west-2.amazonaws.com/test/post_events_to_dynamodb',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(employeeData) // Send the employee data directly
+        }
+      );
 
-    setShowSuccessModal(true); // Show success modal
+      // Error handling
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        console.error(
+          `HTTP error! Status: ${response.status}, Message: ${errorMessage}`
+        );
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('Response from API:', result);
+
+      // Show success modal and update parent component
+      setShowSuccessModal(true);
+      addEmployee(employeeData); // Call addEmployee to update the parent component
+
+      // Reset form after successful submission
+      setFormData({
+        name: '',
+        dateOfBirth: '',
+        address: '',
+        phone: '',
+        email: '',
+        profileImage: null // Reset profile image
+      });
+    } catch (error) {
+      console.error('Failed to submit employee data:', error);
+      setErrorMessage('Failed to submit data. Please try again.'); // Set error message to display
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCloseModal = () => {
@@ -135,23 +175,22 @@ const EmployeeForm = ({ addEmployee, onClose }) => {
           <Button variant="white" type="button" onClick={onClose}>
             Close
           </Button>
-          <Button variant="primary" type="submit">
-            Save
+          <Button variant="primary" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Saving...' : 'Save'}
           </Button>
-          <div
-            className="spinner-border spinner-border-sm mt-2"
-            role="status"
-            hidden
-            id="general-status"
-          >
-            <span className="visually-hidden">Updating...</span>
-          </div>
-          <i
-            className="bi bi-check-square-fill"
-            role="alert"
-            hidden
-            id="general-alert"
-          ></i>
+          {isSubmitting && (
+            <div
+              className="spinner-border spinner-border-sm mt-2"
+              role="status"
+            >
+              <span className="visually-hidden">Updating...</span>
+            </div>
+          )}
+          {errorMessage && (
+            <div className="alert alert-danger mt-2" role="alert">
+              {errorMessage}
+            </div>
+          )}
         </div>
       </Form>
 
