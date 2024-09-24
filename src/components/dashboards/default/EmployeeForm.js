@@ -33,7 +33,6 @@ const EmployeeForm = ({ addEmployee, onClose }) => {
       profileImage: file // Store file object
     });
   };
-
   const handleSubmit = async e => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -41,13 +40,23 @@ const EmployeeForm = ({ addEmployee, onClose }) => {
     try {
       // Construct employee data with the current timestamp
       const employeeData = {
-        ...formData,
+        name: formData.name,
+        dateOfBirth: formData.dateOfBirth,
+        address: formData.address,
+        phone: formData.phone,
+        email: formData.email,
+        profileImage: formData.profileImage,
         category: 'Employees',
         timestamp: new Date().toISOString() // Sets timestamp to the current date and time
       };
 
+      // Wrap employeeData in the "body" key
+      const requestBody = {
+        body: employeeData
+      };
+
       // Log employeeData for debugging
-      console.log('Employee data before sending:', employeeData);
+      console.log('Request body before sending:', requestBody);
 
       // Send form data to the provided API
       const response = await fetch(
@@ -57,7 +66,7 @@ const EmployeeForm = ({ addEmployee, onClose }) => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(employeeData) // Send the employee data directly
+          body: JSON.stringify(requestBody) // Send the employee data wrapped in "body"
         }
       );
 
@@ -94,9 +103,11 @@ const EmployeeForm = ({ addEmployee, onClose }) => {
     }
   };
 
+  // Updated handleCloseModal function to reload the page
   const handleCloseModal = () => {
     setShowSuccessModal(false);
     onClose(); // Close the form after submission
+    window.location.reload(); // Reload the page when the modal is closed
   };
 
   return (
