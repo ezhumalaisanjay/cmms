@@ -17,8 +17,8 @@ import {
 } from 'data/dashboard/projectManagement';
 import { weather } from 'data/dashboard/default';
 import Greetings from 'components/dashboards/project-management/Greetings';
-import Weather from 'components/dashboards/default/Weather';
-import SpaceWarning from 'components/dashboards/default/SpaceWarning';
+import Weather from 'components/dashboards/Users/Weather';
+import SpaceWarning from 'components/dashboards/Users/SpaceWarning';
 import PageHeader from 'components/common/PageHeader';
 import SoftBadge from 'components/common/SoftBadge';
 import ProjectLocation from 'components/dashboards/project-management/project-location/ProjectLocation';

@@ -18,7 +18,7 @@ import Followers from 'components/pages/user/profile/Followers';
 import ActivityLog from 'components/pages/user/profile/ActivityLog';
 import activities from 'data/activities';
 import AddToFeed from 'components/app/social/feed/AddToFeed';
-import ActiveUsers from 'components/dashboards/default/ActiveUsers';
+import ActiveUsers from 'components/dashboards/Users/ActiveUsers';
 import { users } from 'data/dashboard/default';
 
 const UsersWidgets = () => {

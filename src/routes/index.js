@@ -182,7 +182,7 @@ import SplitConfirmMail from 'components/authentication/split/ConfirmMail';
 import SplitLockScreen from 'components/authentication/split/LockScreen';
 
 import Wizard from 'components/wizard/Wizard';
-import Dashboard from 'components/dashboards/default';
+import Dashboard from 'components/dashboards/Users';
 import Faq from 'components/documentation/Faq';
 
 import SupportDesk from 'components/dashboards/support-desk';

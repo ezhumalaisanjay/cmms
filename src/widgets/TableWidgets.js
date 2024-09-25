@@ -3,7 +3,7 @@ import { Card, Col, Row } from 'react-bootstrap';
 import WidgetSectionTitle from './WidgetSectionTitle';
 import RecentPurchases from 'components/dashboards/e-commerce/recent-purchases/RecentPurchases';
 import Customers from 'components/app/e-commerce/customers/Customers';
-import SharedFiles from 'components/dashboards/default/SharedFiles';
+import SharedFiles from 'components/dashboards/Users/SharedFiles';
 import TopPages from 'components/dashboards/analytics/top-pages/TopPages';
 import { topPagesTableData, intelligence } from 'data/dashboard/analytics';
 import { files } from 'data/dashboard/default';

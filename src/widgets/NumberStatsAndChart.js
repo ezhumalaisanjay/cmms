@@ -2,9 +2,9 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import WidgetSectionTitle from './WidgetSectionTitle';
 import StatisticsCards from 'components/dashboards/saas/stats-cards/StatisticsCards';
-import WeeklySales from 'components/dashboards/default/WeeklySales';
-import TotalOrder from 'components/dashboards/default/TotalOrder';
-import MarketShare from 'components/dashboards/default/MarketShare';
+import WeeklySales from 'components/dashboards/Users/WeeklySales';
+import TotalOrder from 'components/dashboards/Users/TotalOrder';
+import MarketShare from 'components/dashboards/Users/MarketShare';
 
 import ProductShare from 'components/dashboards/e-commerce/ProductShare/ProductShare';
 import {
@@ -35,16 +35,16 @@ import {
   projectUsers
 } from 'data/dashboard/projectManagement';
 import { countryData } from 'data/countryData';
-import StorageStatus from 'components/dashboards/default/StorageStatus';
+import StorageStatus from 'components/dashboards/Users/StorageStatus';
 import SaasActiveUser from 'components/dashboards/saas/SaasActiveUser';
 import SaasRevenue from 'components/dashboards/saas/SaasRevenue';
 import SaasConversion from 'components/dashboards/saas/SaasConversion';
 import EcomStat from 'components/dashboards/e-commerce/EcomStat';
 import LinePayment from 'components/dashboards/saas/line-payment/LinePayment';
-import BandwidthSaved from 'components/dashboards/default/BandwidthSaved';
+import BandwidthSaved from 'components/dashboards/Users/BandwidthSaved';
 import RealTimeUsers from 'components/dashboards/analytics/real-time-users/RealTimeUsers';
-import TopProducts from 'components/dashboards/default/TopProducts';
-import TotalSales from 'components/dashboards/default/TotalSales';
+import TopProducts from 'components/dashboards/Users/TopProducts';
+import TotalSales from 'components/dashboards/Users/TotalSales';
 import TotalSalesEcommerce from 'components/dashboards/e-commerce/totalsales/TotalSales';
 import Audience from 'components/dashboards/analytics/audience/Audience';
 import SessionByBrowser from 'components/dashboards/analytics/session-by-browser/SessionByBrowser';

@@ -4,7 +4,7 @@ import EcomStat from './EcomStat';
 import GreetingCard from './greetings/GreetingCard';
 import TotalSales from './totalsales/TotalSales';
 import { totalSale } from 'data/dashboard/ecom';
-import TopProducts from '../default/TopProducts';
+import TopProducts from '../Users/TopProducts';
 import { topProducts } from 'data/dashboard/ecom';
 import {
   notifications,
@@ -14,8 +14,8 @@ import {
 } from 'data/dashboard/ecom';
 import { weeklySalesData } from 'data/dashboard/default';
 import { marketShare } from 'data/dashboard/ecom';
-import WeeklySales from 'components/dashboards/default/WeeklySales';
-import MarketShare from 'components/dashboards/default/MarketShare';
+import WeeklySales from 'components/dashboards/Users/WeeklySales';
+import MarketShare from 'components/dashboards/Users/MarketShare';
 import TotalOrder from 'components/dashboards/e-commerce/TotalOrder';
 import ShoppingCart from './ShoppingCart';
 import ReturningCustomer from './ReturningCustomer/ReturningCustomer';
