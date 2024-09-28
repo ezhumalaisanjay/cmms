@@ -13,11 +13,13 @@
   will-change: transform, opacity, filter;
   backface-visibility: hidden;
   background-repeat: no-repeat;
+  background-color: #ffffff;
   z-index: 0;
 
   &.bg-right {
     left: auto;
     right: 0;
+        background-color: #ffffff;
   }
 
   &.overlay:before {
