@@ -1,14 +1,23 @@
-/* Add your existing styles here */
-.form-builder-container {
-    width: 100%;
+.form-builder-wrapper {
+    display: flex;
+    gap: 20px;
     padding: 20px;
+}
+
+.form-builder-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-renderer-section {
+    flex: 1;
 }
 
 .basic-fields-list {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 10px;
-    margin-bottom: 20px;
 }
 
 .add-field-btn {
@@ -16,89 +25,72 @@
     color: white;
     padding: 10px;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
-}
-
-.add-field-btn:hover {
-    background-color: #0056b3;
+    text-align: center;
 }
 
 .form-builder-section {
-    border: 1px solid #ddd;
+    flex-grow: 1;
     padding: 20px;
-    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
 .form-field-preview {
-    border: 1px dashed #ccc;
+    margin-bottom: 20px;
     padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    background-color: #f9f9f9;
+    border: 1px dashed #ccc;
+    position: relative;
 }
 
 .form-group {
     margin-bottom: 10px;
 }
 
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
 .form-control {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    box-sizing: border-box;
 }
 
-.align-left {
-    text-align: left;
+.align-btn {
+    background-color: #ffc107;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.remove-field-btn {
+    background-color: #dc3545;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.save-form-btn {
+    background-color: #28a745;
+    padding: 10px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
 }
 
 .align-right {
     text-align: right;
 }
 
-.align-btn {
-    background-color: #ffc107;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
+.align-left {
+    text-align: left;
 }
 
-.align-btn:hover {
-    background-color: #e0a800;
-}
-
-.option-group {
-    display: flex;
-    align-items: center;
-}
-
-.remove-field-btn {
-    background-color: #dc3545;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.remove-field-btn:hover {
-    background-color: #c82333;
-}
-
-.add-option-btn {
-    background-color: #28a745;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.add-option-btn:hover {
-    background-color: #218838;
+.form-preview {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-top: 20px;
 }

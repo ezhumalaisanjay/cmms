@@ -1,30 +1,45 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import FormRenderer from './FormRenderer';
 import './FormBuilder.css';
 
-const basicFields = [
+const fieldTypes = [
   { type: 'text', label: 'Single Line' },
-  { type: 'textarea', label: 'Multi Line' },
-  { type: 'checkbox', label: 'Checkbox' },
-  { type: 'dropdown', label: 'Dropdown' },
-  { type: 'file', label: 'File Upload' },
+  { type: 'number', label: 'Number' },
   { type: 'name', label: 'Name' },
+  { type: 'phone', label: 'Phone' },
   { type: 'date', label: 'Date' },
-  { type: 'radio', label: 'Radio Button' },
+  { type: 'datetime', label: 'Date-Time' },
+  { type: 'dropdown', label: 'Dropdown' },
+  { type: 'multiple-choice', label: 'Multiple Choice' },
+  { type: 'website', label: 'Website' },
+  { type: 'file', label: 'File Upload' },
+  { type: 'audio-video', label: 'Audio/Video Upload' },
   { type: 'section', label: 'Section' },
-  { type: 'currency', label: 'Currency' }
+  { type: 'slider', label: 'Slider' },
+  { type: 'unique-id', label: 'Unique ID' },
+  { type: 'embed', label: 'Embed' },
+  { type: 'textarea', label: 'Multi Line' },
+  { type: 'decimal', label: 'Decimal' },
+  { type: 'address', label: 'Address' },
+  { type: 'email', label: 'Email' },
+  { type: 'time', label: 'Time' },
+  { type: 'month-year', label: 'Month-Year' },
+  { type: 'decision-box', label: 'Decision Box' },
+  { type: 'radio', label: 'Radio' },
+  { type: 'checkbox', label: 'Checkbox' },
+  { type: 'currency', label: 'Currency' },
+  { type: 'image-upload', label: 'Image Upload' },
+  { type: 'description', label: 'Description' },
+  { type: 'page-break', label: 'Page Break' },
+  { type: 'rating', label: 'Rating' }
 ];
 
-const DynamicForm = ({ setFormFields }) => {
+const DynamicForm = () => {
   const [fields, setFields] = useState([]);
-  // State for alignment
   const [alignments, setAlignments] = useState({});
 
-  const addField = fieldType => {
-    setFields([
-      ...fields,
-      { type: fieldType, label: '', name: '', options: [] }
-    ]);
+  const addField = type => {
+    setFields([...fields, { type, label: '', name: '', options: [] }]);
   };
 
   const removeField = index => {
@@ -32,66 +47,39 @@ const DynamicForm = ({ setFormFields }) => {
   };
 
   const handleFieldChange = (index, key, value) => {
-    const newFields = [...fields];
-    newFields[index][key] = value;
-    setFields(newFields);
-    setFormFields(newFields);
-  };
-
-  const addOption = index => {
-    const newFields = [...fields];
-    newFields[index].options = [...newFields[index].options, ''];
-    setFields(newFields);
-    setFormFields(newFields);
-  };
-
-  const handleOptionChange = (fieldIndex, optionIndex, value) => {
-    const newFields = [...fields];
-    newFields[fieldIndex].options[optionIndex] = value;
-    setFields(newFields);
-    setFormFields(newFields);
-  };
-
-  const handleDragStart = (e, index) => {
-    e.dataTransfer.setData('text/plain', index);
-  };
-
-  const handleDrop = (e, index) => {
-    const draggedIndex = e.dataTransfer.getData('text/plain');
-    const newFields = [...fields];
-    const [removed] = newFields.splice(draggedIndex, 1);
-    newFields.splice(index, 0, removed);
-    setFields(newFields);
-    setFormFields(newFields);
-  };
-
-  const handleDragOver = e => {
-    e.preventDefault();
+    const updatedFields = [...fields];
+    updatedFields[index][key] = value;
+    setFields(updatedFields);
   };
 
   const toggleAlignment = index => {
-    const newAlignments = { ...alignments };
-    newAlignments[index] = newAlignments[index] === 'right' ? 'left' : 'right';
-    setAlignments(newAlignments);
+    setAlignments(prev => ({
+      ...prev,
+      [index]: prev[index] === 'right' ? 'left' : 'right'
+    }));
+  };
+
+  const saveForm = () => {
+    console.log('Form saved with fields:', fields);
+    // Save form logic can be added here, e.g., API call or local storage
   };
 
   return (
-    <div className="form-builder-container">
-      <h2>Basic Fields</h2>
-      <div className="basic-fields-list">
-        {basicFields.map((field, index) => (
-          <button
-            key={index}
-            type="button"
-            className="add-field-btn"
-            onClick={() => addField(field.type)}
-          >
-            {field.label}
-          </button>
-        ))}
-      </div>
+    <div className="form-builder-wrapper">
+      <div className="form-builder-container">
+        <div className="basic-fields-list">
+          {fieldTypes.map((field, index) => (
+            <button
+              key={index}
+              type="button"
+              className="add-field-btn"
+              onClick={() => addField(field.type)}
+            >
+              {field.label}
+            </button>
+          ))}
+        </div>
 
-      {fields.length > 0 && (
         <div className="form-builder-section">
           <h2>Form Builder</h2>
           {fields.map((field, index) => (
@@ -100,10 +88,6 @@ const DynamicForm = ({ setFormFields }) => {
               className={`form-field-preview ${
                 alignments[index] === 'right' ? 'align-right' : 'align-left'
               }`}
-              draggable
-              onDragStart={e => handleDragStart(e, index)}
-              onDragOver={handleDragOver}
-              onDrop={e => handleDrop(e, index)}
             >
               <div className="form-group">
                 <label>Label</label>
@@ -128,34 +112,6 @@ const DynamicForm = ({ setFormFields }) => {
                 />
               </div>
 
-              {['dropdown', 'radio'].includes(field.type) && (
-                <>
-                  <div className="form-group">
-                    <label>Options</label>
-                    {field.options.map((option, optIndex) => (
-                      <div key={optIndex} className="option-group">
-                        <input
-                          type="text"
-                          value={option}
-                          onChange={e =>
-                            handleOptionChange(index, optIndex, e.target.value)
-                          }
-                          className="form-control"
-                          placeholder={`Option ${optIndex + 1}`}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  <button
-                    type="button"
-                    className="add-option-btn"
-                    onClick={() => addOption(index)}
-                  >
-                    Add Option
-                  </button>
-                </>
-              )}
-
               <button
                 type="button"
                 className="align-btn"
@@ -163,7 +119,6 @@ const DynamicForm = ({ setFormFields }) => {
               >
                 {alignments[index] === 'right' ? 'Align Left' : 'Align Right'}
               </button>
-
               <button
                 type="button"
                 className="remove-field-btn"
@@ -173,14 +128,20 @@ const DynamicForm = ({ setFormFields }) => {
               </button>
             </div>
           ))}
+
+          {/* Save Form Button */}
+          <button className="save-form-btn" onClick={saveForm}>
+            Save Form
+          </button>
         </div>
-      )}
+      </div>
+
+      <div className="form-renderer-section">
+        <h2>Rendered Form</h2>
+        <FormRenderer fields={fields} />
+      </div>
     </div>
   );
-};
-
-DynamicForm.propTypes = {
-  setFormFields: PropTypes.func.isRequired
 };
 
 export default DynamicForm;
