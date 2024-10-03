@@ -2,11 +2,18 @@ import React, { useState } from 'react';
 import { Table, Button, Form, Image, Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import EmployeeForm from './EmployeeForm';
+import { saveAs } from 'file-saver'; // Import file-saver for export functionality
 import './EmployeeTable.css'; // Import a CSS file for custom styles
 
 const EmployeeTable = ({ employeeList, addEmployee }) => {
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+  const [filters, setFilters] = useState({
+    name: '',
+    employeeId: '',
+    phone: ''
+  });
 
   const toggleEmployeeSelection = employee => {
     if (selectedEmployees.includes(employee)) {
@@ -24,6 +31,63 @@ const EmployeeTable = ({ employeeList, addEmployee }) => {
     setShowForm(false);
   };
 
+  const handleFilterOpen = () => {
+    setShowFilter(true);
+  };
+
+  const handleFilterClose = () => {
+    setShowFilter(false);
+  };
+
+  const handleFilterChange = e => {
+    setFilters({
+      ...filters,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const applyFilters = () => {
+    // Implement the filtering logic based on the filters state
+    console.log('Filters applied:', filters);
+    handleFilterClose();
+  };
+
+  const clearFilters = () => {
+    setFilters({
+      name: '',
+      employeeId: '',
+      phone: ''
+    });
+  };
+
+  const exportData = () => {
+    // Create CSV content
+    const csvHeaders = [
+      'Employee ID',
+      'Name',
+      'Date of Birth',
+      'Address',
+      'Phone',
+      'Email'
+    ];
+    const csvRows = employeeList.map(employee => [
+      employee.employeeId,
+      employee.name,
+      employee.dateOfBirth,
+      employee.address,
+      employee.phone,
+      employee.email
+    ]);
+
+    let csvContent = `${csvHeaders.join(',')}\n${csvRows
+      .map(row => row.join(','))
+      .join('\n')}`;
+
+    // Create a Blob from the CSV content and use file-saver to download it
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'employee_data.csv');
+  };
+
   return (
     <div className="mb-3 card p-4">
       <div className="card-header d-flex justify-content-between align-items-center">
@@ -36,15 +100,20 @@ const EmployeeTable = ({ employeeList, addEmployee }) => {
           >
             <i className="fas fa-plus me-1"></i> New
           </Button>
-          <Button variant="outline-secondary" className="me-2">
+          <Button
+            variant="outline-secondary"
+            onClick={handleFilterOpen}
+            className="me-2"
+          >
             <i className="fas fa-filter me-1"></i> Filter
           </Button>
-          <Button variant="outline-secondary">
+          <Button variant="outline-secondary" onClick={exportData}>
             <i className="fas fa-external-link-alt me-1"></i> Export
           </Button>
         </div>
       </div>
 
+      {/* Add Employee Modal */}
       <Modal show={showForm} onHide={handleFormClose}>
         <Modal.Header closeButton>
           <Modal.Title>Add New Employee</Modal.Title>
@@ -52,6 +121,55 @@ const EmployeeTable = ({ employeeList, addEmployee }) => {
         <Modal.Body>
           <EmployeeForm addEmployee={addEmployee} onClose={handleFormClose} />
         </Modal.Body>
+      </Modal>
+
+      {/* Filter Modal */}
+      <Modal show={showFilter} onHide={handleFilterClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Filter Employees</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="filterName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="name"
+                value={filters.name}
+                onChange={handleFilterChange}
+                placeholder="Enter employee name"
+              />
+            </Form.Group>
+            <Form.Group controlId="filterEmployeeId">
+              <Form.Label>Employee ID</Form.Label>
+              <Form.Control
+                type="text"
+                name="employeeId"
+                value={filters.employeeId}
+                onChange={handleFilterChange}
+                placeholder="Enter employee ID"
+              />
+            </Form.Group>
+            <Form.Group controlId="filterPhone">
+              <Form.Label>Phone</Form.Label>
+              <Form.Control
+                type="text"
+                name="phone"
+                value={filters.phone}
+                onChange={handleFilterChange}
+                placeholder="Enter employee phone"
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={clearFilters}>
+            Clear
+          </Button>
+          <Button variant="primary" onClick={applyFilters}>
+            Apply
+          </Button>
+        </Modal.Footer>
       </Modal>
 
       <div className="table-responsive">

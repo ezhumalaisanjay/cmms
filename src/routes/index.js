@@ -79,7 +79,7 @@ import AnimatedIcons from 'components/doc-components/AnimatedIcons';
 import DatePicker from 'components/doc-components/DatePicker';
 import FontAwesome from 'components/doc-components/FontAwesome';
 import Changelog from 'components/documentation/change-log/ChangeLog';
-import Analytics from 'components/dashboards/analytics';
+import Analytics from 'components/dashboards/forms-builder';
 import Crm from 'components/dashboards/crm';
 import Saas from 'components/dashboards/saas';
 import Profile from 'components/pages/user/profile/Profile';
